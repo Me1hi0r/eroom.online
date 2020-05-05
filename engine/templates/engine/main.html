@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <title>Covid</title>
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'engine/style.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+      integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP"
+      crossorigin="anonymous"
+    />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="{% static 'engine/lib/jquery_35.js' %}"></script>
+    <script src="{% static 'engine/appa4.js' %}"></script>
+    <script src="{% static 'engine/lib/countdown/dist/jquery.countdown.js' %}"></script>
+    <script src="{% static 'engine/lib/jquery.backgroundvideo.min.js' %}"></script>
+  </head>
+
+  <body>
+    <div class="video_place"></div>
+    {% block content %} 
+    {% endblock %} 
+    
+    {% if btn_show is None %}
+      <nav class="navbar bg-transparent fixed-bottom navbar-expand-md navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Covid Version: pre-Alpha</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <div class="countdown">
+              <span id="clock"></span>
+            </div>
+          </li>
+        </ul>
+        {% block btn %} {% endblock %}
+        <ul class="nav navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">
+              Logout {{request.user}}</a
+            >
+          </li>
+        </ul>
+      </nav>
+    {% endif %}
+  </body>
+</html>

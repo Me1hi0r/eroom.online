@@ -1,0 +1,39 @@
+{% block content %}
+{% load static %}
+<nav class="navbar fixed-bottom navbar-expand-lg navbar-light bg-light">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item">
+        <button class="btn btn-outline-success" role="button" aria-pressed="true" onclick="p.src='{% static 'engine/images/LabPlan_.jpg' %}'">Laboratory</button>
+      </li>
+      <li class="nav-item">
+        <button class="btn btn-outline-success" role="button" aria-pressed="true" onclick="p.src='{% static 'engine/images/Reagents.jpg' %}'">Reagents</button>
+      </li>
+      <li class="nav-item">
+         <button class="btn btn-outline-success" role="button" aria-pressed="true" onclick="p.src='{% static 'engine/images/mainTable.jpg' %}'">Table</button>
+      </li>
+      <li class="nav-item">
+         <button class="btn btn-outline-success" role="button" aria-pressed="true" onclick="p.src='{% static 'engine/images/TestTubes.jpg' %}'">Tubes</button>
+      </li>
+    </ul>
+   <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="nav-item">
+        <div class="countdown">
+          <span id="clock"></span>
+        </div>
+      </li>
+   </ul>
+
+    <ul class="nav navbar-nav">
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    </ul>
+    <ul class="nav navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'logout' %}"> Logout {{request.user}}</a>
+      </li>
+    </ul>
+</nav>
+
+{% endblock content %}

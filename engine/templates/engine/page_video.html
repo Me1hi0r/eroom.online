@@ -1,0 +1,35 @@
+{% extends 'engine/main.html' %}
+{% load static %}
+
+{% block content %}
+<script>
+  $(document).ready(function () {
+    var video = back_video('{{ video }}');
+    video.play();
+  });
+</script>
+{% endblock content %}
+
+{% block btn %}
+<ul class="navbar-nav mx-auto">
+  {% if back_btn %}
+  <li class="nav-item">
+    <a class="nav-link" href="{{ back_btn }}">
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </a>
+  </li>
+  {% endif %}
+  <li class="nav-item">
+    <a class="nav-link" onclick="play_pause()" href="#">
+      <i class="fa fa-play" aria-hidden="true"></i>
+    </a>
+  </li>
+  {% if next_btn %}
+  <li class="nav-item">
+    <a class="nav-link" href="{{ next_btn }}">
+      <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    </a>
+  </li>
+  {% endif %}
+</ul>
+{% endblock btn %}

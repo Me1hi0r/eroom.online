@@ -1,0 +1,40 @@
+{% extends 'engine/main.html' %}
+{% load static %}
+
+{% block content %}
+
+  <img id='pict' src="{{ picture }}">
+
+    <script>
+    $(document).ready(function() {
+      p = document.body.querySelector("#pict");
+      p.height = window.innerHeight;
+      p.width = window.innerWidth;
+    });
+  </script>
+
+{% endblock content %}
+
+{% block btn %}
+  <ul class="navbar-nav mx-auto">
+<li class="nav-item">
+    <li class="nav-item">
+          <a class="nav-link" href="{% url 'laboratory' %}">
+              Laboratory
+          </a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link" href="{% url 'table' %}">
+              Table
+          </a>
+      </li>
+      <li class="nav-item">
+      <form class="form-inline" action="{% url 'check_news' %}" method="GET">
+          <input name="answer" class="form-control mr-sm-2" type="text" placeholder="Type help for hint" aria-label="Search">
+          <input type="submit" value="Submit" />
+      </form>
+      </li>
+  </ul>
+
+
+{% endblock btn %}

@@ -1,0 +1,29 @@
+{% extends 'engine/main.html' %}
+{% load static %}
+{% block content %}
+
+  <div class="start-container">
+    <h1 class="start-text">
+      <p>You have a chance to investigate a mystery from the past:
+      the year 2020, an opening of the time capsule solemnly buried in
+      2000 turns into a worldwide mystery when strange files named
+      SARS-CoV-2 are discovered among its contents.</p>
+      
+      <p>Now is the time to gather your thoughts and call friends (zoom, facetime, etc)
+      Before you start, be sure to read the rules of the game.</p>
+ 
+    </h1>
+
+    <a href="{% url 'intro1' %}" class="btn btn-outline-light" role="button" aria-pressed="true">TRY YOURSELF</a>
+    <button class="btn btn-outline-light" role="button" aria-pressed="true" onclick="document.body.querySelector('.start-text').innerText = 'rules'">RULES</button>
+  </div>
+
+  <script>
+      $(document).ready(function() {
+        back_video('{{ video }}', true).play();
+      });
+  </script>
+{% endblock content %}
+
+
+

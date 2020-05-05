@@ -1,0 +1,19 @@
+{% extends 'engine/page_static.html' %}
+{% load static %}
+
+{% block form %}
+
+
+        <li class="nav-item">
+            <form class="form-inline" action="{% url 'check_answers' %}" method="POST">
+                {% csrf_token %}
+                {% if ans_1 %}<input name="ans_1" class="form-control mr-sm-2" type="text" aria-label="Search1" value="{{ answ_1 }}">{% endif %}
+                {% if ans_2 %}<input name="ans_2" class="form-control mr-sm-2" type="text" aria-label="Search2" value="{{ answ_2 }}">{% endif %}
+                {% if ans_3 %}<input name="ans_3" class="form-control mr-sm-2" type="text" aria-label="Search3" value="{{ answ_3 }}">{% endif %}
+                {% if ans_4 %}<input name="ans_4" class="form-control mr-sm-2" type="text" aria-label="Search4" value="{{ answ_4 }}">{% endif %}
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Enter</button>
+            </form>
+        </li>
+
+
+{% endblock form %}

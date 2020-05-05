@@ -1,0 +1,28 @@
+{% extends 'engine/main.html' %}
+{% load static %}
+{% block content %}
+
+<div class="start-container">
+    <h1 class="start-text">
+        {{ text }}
+    </h1>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        back_video('{{ video }}', true).play();
+    });
+</script>
+
+{% endblock content %}
+
+{% block btn %}
+<ul class="navbar-nav mx-auto">
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'laboratory' %}">
+            Laboratory
+        </a>
+    </li>
+</ul>
+{% endblock btn %}
