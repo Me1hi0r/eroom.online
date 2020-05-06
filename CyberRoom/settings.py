@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'enuftb1+i_+k-s+y-%&b&f4@fe^!6#
 
 DEBUG = bool( os.environ.get('DJANGO_DEBUG', True) )
 
-ALLOWED_HOSTS = ['64.227.121.183', 'localhost']
+ALLOWED_HOSTS = ['64.227.121.183', 'localhost', "ergame.online",]
 
 
 # Application definition
@@ -82,9 +82,9 @@ WSGI_APPLICATION = 'CyberRoom.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'USER': 'myprojectuser',
-        'PASSWORD': 'password',
+        'NAME': 'my_pgdb',
+        'USER': 'my_super_user',
+        'PASSWORD': 'my_password',
         'HOST': 'localhost',
         'PORT': '',
  
