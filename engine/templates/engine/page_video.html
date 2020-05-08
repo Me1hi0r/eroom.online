@@ -8,26 +8,46 @@
     video.play();
   });
 </script>
+<script>
+  document.body.querySelector('#video_background').addEventListener("ended", function () {
+      console.log('Video stopped either because 1) it was over, ' +
+        'or 2) no further data is available.');
+    }, true);
+</script>
 {% endblock content %}
 
 {% block btn %}
-<ul class="navbar-nav mx-auto">
+<ul class="navbar-nav mr-auto">
+  <!-- <li class="nav-item">
+    <div class="countdown">
+      <span id="clock"></span>
+      vdf
+    </div>
+  </li> -->
+  <li class="nav-item">
+    <a class="nav-link text-light" href="">
+      <i class="fa fa-undo fa-3x" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link text-light" onclick="play_pause()" href="#">
+      <i class="fa fa-play fa-3x" aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+<ul class="navbar-nav ml-auto">
   {% if back_btn %}
   <li class="nav-item">
-    <a class="nav-link" href="{{ back_btn }}">
-      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    <a class="nav-link text-light" href="{{ back_btn }}">
+      <i class="fa fa-fast-backward fa-3x" aria-hidden="true"></i>
     </a>
   </li>
   {% endif %}
-  <li class="nav-item">
-    <a class="nav-link" onclick="play_pause()" href="#">
-      <i class="fa fa-play" aria-hidden="true"></i>
-    </a>
-  </li>
+
   {% if next_btn %}
   <li class="nav-item">
-    <a class="nav-link" href="{{ next_btn }}">
-      <i class="fa fa-arrow-right" aria-hidden="true"></i>
+    <a class="nav-link text-light" href="{{ next_btn }}">
+      <i class="fa fa-fast-forward fa-3x" aria-hidden="true"></i>
     </a>
   </li>
   {% endif %}

@@ -1,0 +1,75 @@
+{% extends 'engine/main.html' %}
+{% load static %}
+
+{% block head %}
+<style>
+  a {
+    color: #3498db;
+    text-decoration: none;
+    display: inline-block;
+    letter-spacing: 1px;
+    padding: 1em 2em;
+    text-decoration: none;
+    font-weight: 800;
+  }
+</style>
+<script src="{% static 'engine/lib/okzoom.js' %}"></script>
+{% endblock head %}
+
+{% block hint %}
+
+<div class="btn-group dropleft">
+  <button type="button" class="btn btn-light btn-secondary dropdown-toggle btn-lg" data-toggle="dropdown"
+    aria-haspopup="true" aria-expanded="false">
+    HINT
+  </button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="#">{{ hint_1 }}</a>
+  </div>
+
+</div>
+{% endblock hint %}
+
+{% block content %}
+
+<div style="text-align:center;">
+  <img id="news" src="{% static 'engine/images/picture.jpg' %}" width="60%">
+</div>
+
+
+
+<script>
+  $(function () {
+    $('#news').okzoom({
+      width: 200,
+      height: 200,
+      border: "2px solid black",
+      shadow: "0 0 5px #000"
+    });
+  });
+</script>
+
+{% endblock content %}
+
+{% block btn %}
+<ul class="navbar-nav mx-auto">
+  <li class="nav-item">
+    <form class="form-inline my-2 my-lg-0" action="" method="POST">
+      {% csrf_token %}
+      Glases:<input name="glasses" class="form-control mr-sm-2" type="search">
+      Masks:<input name="masks" class="form-control mr-sm-2" type="search">
+      Gloves:<input name="gloves" class="form-control mr-sm-2" type="search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-check"
+          aria-hidden="true"></i></button>
+    </form>
+  </li>
+</ul>
+<ul class="navbar-nav ml-auto">
+  <li class="nav-item">
+    <a class="nav-link text-light" href="{% url 'suites' %}">
+      <i class="fa fa-fast-backward fa-3x" aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+{% endblock btn %}

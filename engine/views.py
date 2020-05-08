@@ -101,6 +101,11 @@ def video(request, page):
             'video': 'virus_table',
             'back_btn': reverse('table'),
         }
+    if page == 'suites_video':
+        ctx = {
+            'video': 'suites',
+            'back_btn': reverse('suites'),
+        }
     if page == 'small_tbl_video':
         ctx = {
             'video': 'human_cell',
@@ -115,78 +120,72 @@ def video(request, page):
     return render(request, 'engine/page_video.html', ctx)
 
 @login_required(login_url='login')
-def static(request, page):
+def picture(request, page):
     if page == 'microscope':
         ctx = {
             'picture': '/static/engine/images/microscope.jpg',
-            'btn_1': reverse('laboratory'),
-            'btn_1_label': 'Lavoratory',
             'btn_2': reverse('microscope_look'),
             'btn_2_label': ' Watch',
-            'btn_3': reverse('check_microscope'),
-            'btn_3_label': 'Watch with lens',
             'btn_4': reverse('microscope_v'),
             'btn_4_label': 'Watch video',
+            'btn_back': reverse('laboratory'),
         }
     if page == 'microscope_look':
         ctx = {
             'picture': '/static/engine/images/microscope_look.jpg',
-            'btn_1': reverse('microscope'),
-            'btn_1_label': 'Microscope',
+            'btn_back': reverse('microscope'),
         }
     if page == 'small_table':
         ctx = {
             'picture': '/static/engine/images/small_table.jpg',
-            'btn_1': reverse('laboratory'),
-            'btn_1_label': 'Laboratory',
             'btn_2': reverse('probes'),
             'btn_2_label': ' Probes',
             'btn_3': reverse('small_table_v'),
             'btn_3_label': 'Watch video',
+            'btn_back': reverse('laboratory'),
         }
     if page == 'reagents':
         ctx = {
-            'picture': '/static/engine/images/reagenty.jpg',
-            'btn_1': reverse('laboratory'),
-            'btn_1_label': 'Laboratory',
+            'picture': '/static/engine/images/reagent.jpg',
             'btn_2': reverse('probes'),
             'btn_2_label': ' Probes',
+            'btn_back': reverse('laboratory'),
         }
     if page == 'suites':
         ctx = {
+            'btn_2': reverse('suites_v'),
+            'btn_2_label': 'Watch video',
+            'btn_3': reverse('suites_p'),
+            'btn_3_label': 'See picture',
             'picture': '/static/engine/images/him.jpg',
-            'btn_1': reverse('laboratory'),
-            'btn_1_label': 'Laboratory',
+            'btn_back': reverse('laboratory'),
         }
     if page == 'tv':
         ctx = {
             'picture': '/static/engine/images/tv.jpg',
-            'btn_1': reverse('laboratory'),
-            'btn_1_label': 'Laboratory',
             'btn_2': reverse('tv_v1'),
             'btn_2_label': ' Watch video about Animals',
             'btn_3': reverse('tv_v2'),
             'btn_3_label': 'Watch video about Mutations',
+            'btn_back': reverse('laboratory'),
         }
     if page == 'table':
         ctx = {
             'picture': '/static/engine/images/table.jpg',
-            'btn_1': reverse('laboratory'),
-            'btn_1_label': 'Laboratory',
+            'btn_1': reverse('table_s'),
+            'btn_1_label': 'Symptoms',
             'btn_2': reverse('table_p'),
-            'btn_2_label': 'Check paper',
+            'btn_2_label': 'Check info',
             'btn_3': reverse('table_v'),
             'btn_3_label': 'Watch video',
             'btn_4': reverse('table_n'),
             'btn_4_label': 'Watch news',
+            'btn_back': reverse('laboratory'),
         }
     if page == 'paper':
         ctx = {
             'picture': '/static/engine/images/paper.jpg',
-            'btn_1': reverse('laboratory'),
-            'btn_1_label': 'Laboratory',
-            'btn_2': reverse('table'),
-            'btn_2_label': 'Table',
+            'btn_back': reverse('table'),
         }
     return render(request, 'engine/page_static.html', ctx)
 
@@ -195,14 +194,11 @@ def puzzle(request, page):
     if page == 'probes':
         ctx = {
             'picture': '/static/engine/images/probirki.jpg',
-            'btn_1': reverse('small_table'),
-            'btn_1_label': 'Table',
-            'btn_2': reverse('reagents'),
-            'btn_2_label': 'Reagents',
             'ans_1': True,
             'ans_2': True,
             'ans_3': True,
             'ans_4': True,
+            'btn_back': reverse('small_table'),
         }
     return render(request, 'engine/page_puzzle.html', ctx)
 
@@ -266,31 +262,71 @@ def room_1(request):
 
 @login_required(login_url='login')
 def lab_table_news(request):
-    ctx = {'picture': '/static/engine/images/news_page.jpg'}
-    return render(request, 'engine/lab_tab_news.html', ctx)
+    ctx = {'hint_1': "test hint"}
+    ans = request.POST.get('answer')
+    if ans is not None:
+        if ans.lower() == 'plague':
+            answer = """
+            The purple vaccine should
+            but below the blue,
+            and not next to it
+            """
+            ctx = {
+                'text': answer,
+                'video': 'blur'
+            }
+            return render(request, 'engine/page_show_tips.html', ctx)
+        else:
+            return render(request, 'engine/quest_news.html', ctx)
+    else:
+        return render(request, 'engine/quest_news.html', ctx)
 
 
 @login_required(login_url='login')
-def lab_table_news_check(request, answer='text text'):
-    print(request)
-    ans = request.GET.get('answer')
-    print(ans)
-    if ans.lower() == 'plague':
-        answer = """
-        The purple vaccine should
-        but below the blue,
-        and not next to it
-        """
-        ctx = {
-            'text': answer,
-            'video': 'blur'
-        }
-        return render(request, 'engine/lab_tab_news_solve.html', ctx)
+def quest_suites(request):
+    ctx = {'hint_1': "test hint"}
+    glasses = request.POST.get('glasses')
+    masks = request.POST.get('masks')
+    gloves = request.POST.get('gloves')
+    print(glasses, masks, gloves)
+    if glasses is not None:
+        if glasses == '2' and masks == '5' and gloves == '4':
+            answer = """
+            4 other vaccines should
+            be above the red one
+            """
+            ctx = {
+                'text': answer,
+                'video': 'blur'
+            }
+            return render(request, 'engine/page_show_tips.html', ctx)
+        else:
+            return render(request, 'engine/quest_picture.html', ctx)
     else:
-        ctx = {'picture': '/static/engine/images/news_page.jpg'}
-        return render(request, 'engine/lab_tab_news.html', ctx)
+        return render(request, 'engine/quest_picture.html', ctx)
 
-
+@login_required(login_url='login')
+def lab_table_symptoms(request):
+    ctx = {'hint_1': "test hint"}
+    ans = request.POST.get('answer')
+    if ans is not None:
+        if ans == '28':
+            answer = """
+            the Yellow above green
+            """
+            ctx = {
+                'text': answer,
+                'video': 'blur'
+            }
+            return render(request, 'engine/page_show_tips.html', ctx)
+        else:
+            return redirect('table')
+    else:
+        ctx = {
+            'video': 'symptoms',
+            'hint_1': 'test hint',
+        }
+        return render(request, 'engine/quest_symptoms.html', ctx)
 
 
 @login_required(login_url='login')
@@ -385,9 +421,4 @@ def lab_reagents(request):
     ctx = {'picture': '/static/engine/images/reagenty.jpg'}
     return render(request, 'engine/lab_reagents.html', ctx)
 
-
-@login_required(login_url='login')
-def room_1_2d(request):
-    ctx = {'picture': '/static/engine/images/lab.jpg'}
-    return render(request, 'engine/laboratory.html', ctx)
 

@@ -1,6 +1,6 @@
 function back_video(name, muted=false){
     var videobackground = new $.backgroundVideo($('.video_place'), {
-      "align": "centerXY",
+      "align": "centerY",
       "width": 1240,
       "height": 720,
       "path": "/static/engine/media/",
@@ -8,12 +8,12 @@ function back_video(name, muted=false){
       "types": ["mov", "mp4"],
       "preload": true,
       "autoplay": false,
-      "loop": true,
     });
-    if (muted) $("#video_background").prop('muted', 'muted');
-    var video = document.body.querySelector('#video_background')
-//    video.style.height = '' + (parseInt(video.style.height) - 40) + 'px';
-    return video
+  var v = $("#video_background")
+  v.prop('loop', 'false');
+  if (muted) v.prop('muted', 'muted');
+
+  return document.body.querySelector('#video_background');
 }
 
 // "path": "/static/engine/media/",
@@ -34,14 +34,18 @@ function start_timer(){
     });
 }
 
-$(document).ready(function () {
-p = document.body.querySelector("#pict");
-p.height = window.innerHeight;
-p.width = window.innerWidth;
-});
 
 window.addEventListener('resize', function () {
   p = document.body.querySelector("#pict");
   p.height = window.innerHeight;
   p.width = window.innerWidth;
 });
+
+function video_ended(){
+  video = document.body.querySelector('#video_background');
+  video.onended = (event) => {
+    play_pause();
+    console.log('Video stopped either because 1) it was over, ' +
+      'or 2) no further data is available.');
+  }
+}

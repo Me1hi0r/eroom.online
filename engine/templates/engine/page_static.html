@@ -3,41 +3,58 @@
 
 {% block content %}
   <img id='pict' src="{{ picture }}">
+  <script>
+    p = document.body.querySelector("#pict");
+      p.height = window.innerHeight;
+      p.width = window.innerWidth;
+
+  </script>
 {% endblock content %}
 
 {% block btn %}
 <ul class="navbar-nav mx-auto">
   {% if btn_1 %}
-  <li class="nav-item">
-    <a class="nav-link" href="{{ btn_1 }}">
+  <li class="nav-item mx-1">
+    <a class="nav-link btn btn-light" href="{{ btn_1 }}">
       {{ btn_1_label }}
     </a>
   </li>
   {% endif %}
   {% if btn_2 %}
-  <li class="nav-item">
-    <a class="nav-link" href="{{ btn_2 }}">
+  <li class="nav-item mx-1">
+    <a class="nav-link btn btn-light" href="{{ btn_2 }}">
       {{ btn_2_label }}
     </a>
   </li>
   {% endif %}
   {% if btn_3 %}
-  <li class="nav-item">
-    <a class="nav-link" href="{{ btn_3 }}">
+  <li class="nav-item mx-1">
+    <a class="nav-link btn btn-light" href="{{ btn_3 }}">
       {{ btn_3_label }}
     </a>
   </li>
   {% endif %}
   {% if btn_4 %}
-  <li class="nav-item">
-    <a class="nav-link" href="{{ btn_4 }}">
+  <li class="nav-item mx-1">
+    <a class="nav-link btn btn-light" href="{{ btn_4 }}">
       {{ btn_4_label }}
     </a>
   </li>
   {% endif %}
 
+  
+
   {% block form %}
   {% endblock %}
-  
+
+</ul>
+<ul class="navbar-nav">
+  {% if btn_back %}
+  <li class="nav-item">
+    <a class="nav-link text-light" href="{{ btn_back }}">
+      <i class="fa fa-fast-backward fa-3x" aria-hidden="true"></i>
+    </a>
+  </li>
+  {% endif %}
 </ul>
 {% endblock btn %}
