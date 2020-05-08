@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900&display=swap');
+
+
+
+body {
+  background-color: #000;
+  background: #000;
+  font-family: sans-serif;
+  margin: 0px;
+  padding: 0px;
+}
+.btn-container {
+  text-align: center;
+  margin-bottom: -30%;
+  
+}
+
+.navbar a
+{
+  text-transform: uppercase;
+  font-family: 'Poppins', sans-serif;
+  color: #32a3b1;
+}
+.start-container 
+{
+  text-align: center;
+}
+
+
+@font-face {
+  font-family: Appareo; /* Гарнитура шрифта */
+  src: url(fonts/appareo.ttf); /* Путь к файлу со шрифтом */
+}
+
+h1 {
+  text-transform: uppercase;
+  color: #000000;
+}
+.start-text {
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.video_place {
+  width: 600px;
+  max-height: 100%;
+}
+
+.farme {
+  margin-left: auto;
+  margin-right: auto;
+}
+

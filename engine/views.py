@@ -6,6 +6,28 @@ from django.urls import reverse
 from .forms import CreateUserForm
 
 
+from django.http import JsonResponse
+from django.core import serializers
+
+memory = 0
+import time
+
+
+class MyTimer:
+    def __init__(self, min):
+        self.sec_left = time.time()
+        self.start_time = time.time()
+        self.finish_time = self.start_time + min * 60
+
+    def sec_to_finish(self):
+        if self.finish_time > time.time():
+            self.sec_left = int(self.finish_time - time.time())
+        return self.sec_left
+
+timer = MyTimer(90)
+
+
+
 def create_user(request):
     if request.user.is_authenticated:
         return redirect('intro1')
@@ -15,12 +37,18 @@ def create_user(request):
             form = CreateUserForm(request.POST)
             if form.is_valid():
                 form.save()
+                new_user = authenticate(
+                    username=form.cleaned_data['username'],
+                    password=form.cleaned_data['password1'],
+                )
+                login(request, new_user);
+
                 user = form.cleaned_data.get('username')
                 messages.success(request, f'Account was created for {user}.')
                 return redirect('login')
 
         ctx = {'form': form}
-        return render(request, 'engine/register.html', ctx)
+        return render(request, 'engine/registration.html', ctx)
 
 
 def login_user(request):
@@ -39,7 +67,7 @@ def login_user(request):
             messages.info(request, 'Username or password incorrect')
 
     ctx = {}
-    return render(request, 'engine/login.html', ctx)
+    return render(request, 'engine/loging.html', ctx)
 
 
 def logout_user(request):
@@ -48,18 +76,9 @@ def logout_user(request):
 
 @login_required(login_url='login')
 def start_page(request):
-    start_text = \
-    """
-    You have a chance to investigate a mystery from the past:
-    the year 2020, an opening of the time capsule solemnly buried in
-    2000 turns into a worldwide mystery when strange files named
-    SARS-CoV-2 are discovered among its contents.
-
-    Now is the time to gather your thoughts and call friends (zoom, facetime, etc)
-    Before you start, be sure to read the rules of the game.
-    """
+    global timer 
+    timer = MyTimer(90)
     ctx = {
-        'start_text': start_text,
         'video': 'blur',
         'btn_show': False,
     }
@@ -94,7 +113,7 @@ def video(request, page):
         ctx = {
             'video': 'tv_mutations',
             'back_btn': reverse('tv'),
-            'next_btn': reverse('tv_puzzle')
+            'next_btn': reverse('check_mutations')
         }
     if page == 'tbl_video':
         ctx = {
@@ -121,72 +140,86 @@ def video(request, page):
 
 @login_required(login_url='login')
 def picture(request, page):
+    global timer
+    # ctx = {'time': timer.sec_to_finish()}
+    ctx = dict()
     if page == 'microscope':
-        ctx = {
+        ctx.update({
             'picture': '/static/engine/images/microscope.jpg',
+            'btn_1': reverse('microscope_v'),
+            'btn_1_label': 'Watch video',
             'btn_2': reverse('microscope_look'),
             'btn_2_label': ' Watch',
-            'btn_4': reverse('microscope_v'),
-            'btn_4_label': 'Watch video',
+            'btn_3': reverse('check_microscope'),
+            'btn_3_label': ' Watch with loupe',
             'btn_back': reverse('laboratory'),
-        }
+        })
     if page == 'microscope_look':
-        ctx = {
+        ctx.update({
             'picture': '/static/engine/images/microscope_look.jpg',
             'btn_back': reverse('microscope'),
-        }
+        })
     if page == 'small_table':
-        ctx = {
+        ctx.update({
             'picture': '/static/engine/images/small_table.jpg',
-            'btn_2': reverse('probes'),
+            'btn_2': reverse('check_probes'),
             'btn_2_label': ' Probes',
             'btn_3': reverse('small_table_v'),
             'btn_3_label': 'Watch video',
             'btn_back': reverse('laboratory'),
-        }
+        })
     if page == 'reagents':
-        ctx = {
+        ctx.update({
             'picture': '/static/engine/images/reagent.jpg',
             'btn_2': reverse('probes'),
             'btn_2_label': ' Probes',
             'btn_back': reverse('laboratory'),
-        }
+        })
     if page == 'suites':
-        ctx = {
+        ctx.update({
             'btn_2': reverse('suites_v'),
             'btn_2_label': 'Watch video',
             'btn_3': reverse('suites_p'),
             'btn_3_label': 'See picture',
             'picture': '/static/engine/images/him.jpg',
             'btn_back': reverse('laboratory'),
-        }
+        })
     if page == 'tv':
-        ctx = {
+        ctx.update({
             'picture': '/static/engine/images/tv.jpg',
             'btn_2': reverse('tv_v1'),
             'btn_2_label': ' Watch video about Animals',
-            'btn_3': reverse('tv_v2'),
+            'btn_3': reverse('check_mutations'),
             'btn_3_label': 'Watch video about Mutations',
             'btn_back': reverse('laboratory'),
-        }
+        })
     if page == 'table':
-        ctx = {
+        ctx.update({
             'picture': '/static/engine/images/table.jpg',
             'btn_1': reverse('table_s'),
             'btn_1_label': 'Symptoms',
             'btn_2': reverse('table_p'),
-            'btn_2_label': 'Check info',
+            'btn_2_label': 'Check table',
             'btn_3': reverse('table_v'),
             'btn_3_label': 'Watch video',
             'btn_4': reverse('table_n'),
             'btn_4_label': 'Watch news',
             'btn_back': reverse('laboratory'),
-        }
+        })
     if page == 'paper':
-        ctx = {
+        ctx.update({
             'picture': '/static/engine/images/paper.jpg',
             'btn_back': reverse('table'),
-        }
+        })
+    if page == 'door':
+        ctx.update({
+            'picture': '/static/engine/images/door.jpg',
+            'btn_1': reverse('room3'),
+            'btn_1_label': 'Left panel',
+            'btn_2': reverse('room2'),
+            'btn_2_label': 'Right panel',
+            'btn_back': reverse('laboratory'),
+        })
     return render(request, 'engine/page_static.html', ctx)
 
 @login_required(login_url='login')
@@ -259,10 +292,44 @@ def check_answers(request, page):
 def room_1(request):
     return render(request, 'engine/room_1.html', {})
 
+def quest_room_2(request):
+    return render(request, 'engine/room_1.html', {})
+
+def quest_room_3(request):
+    ans = request.POST.get('answer')
+    ctx = {
+        'picture': '/static/engine/images/cell.jpg',
+    }
+    answers = {
+        'ABAEFGCDHLKJIMNOP',
+        'ABAEFIJMNOKGCDHLP',
+        'AEABCDHGFJIMNOKLP',
+        'ABAEIMNJFGCDHLKOP',
+        'ABAEIMNOKJFGCDHLP',
+        'AEABFJIMNOKGCDHLP',
+        'AEABFJIMNOKGCDHLP',
+        'AEABFJCDHLKJIMNOP'
+    }
+    print(ans)
+    if ans is not None:
+        if ans.upper() in answers:
+            answer = """
+                   Enter in 3 room
+            """
+            ctx = {
+                'text': answer,
+                'video': 'blur'
+            }
+            return render(request, 'engine/page_show_tips.html', ctx)
+        else:
+            return render(request, 'engine/quest_room3.html', ctx)
+    else:
+        return render(request, 'engine/quest_room3.html', ctx)
+
 
 @login_required(login_url='login')
-def lab_table_news(request):
-    ctx = {'hint_1': "test hint"}
+def quest_news(request):
+    ctx = {'hint_1': "There are 5 correct facts and 7 wrong"}
     ans = request.POST.get('answer')
     if ans is not None:
         if ans.lower() == 'plague':
@@ -273,7 +340,7 @@ def lab_table_news(request):
             """
             ctx = {
                 'text': answer,
-                'video': 'blur'
+                'video': 'blur',
             }
             return render(request, 'engine/page_show_tips.html', ctx)
         else:
@@ -281,10 +348,132 @@ def lab_table_news(request):
     else:
         return render(request, 'engine/quest_news.html', ctx)
 
+def quest_microscope(request):
+    print(request)
+    ans = request.POST.get('ans')
+    ctx = {'hint_1': "There are 5 letters in one of the pictures. Find them an make a word."}
+   
+    print(ans)
+    if ans is not None:
+        if ans == 'EBOLA':
+            answer = """
+            The place for the white vaccine is directly above the orange one
+            """
+            ctx = {
+                'text': answer,
+                'video': 'blur',
+                'btn_back': reverse('microscope'),
+            }
+            return render(request, 'engine/page_show_tips.html', ctx)
+        else:
+            return render(request, 'engine/quest_microscope.html', ctx)
+    else:
+        return render(request, 'engine/quest_microscope.html', ctx)
+
+
+@login_required(login_url='login')
+def quest_symptoms(request):
+    ctx = {}
+    ans = request.POST.get('ans')
+    if ans is not None:
+        if ans == '28':
+            answer = """
+            the Yellow above green
+            """
+            ctx = {
+                'text': answer,
+                'video': 'blur'
+            }
+            return render(request, 'engine/page_show_tips.html', ctx)
+        else:
+            return render(request, 'engine/quest_symptoms.html', ctx)
+    else:
+        ctx = {
+            'video': 'symptoms',
+            'hint_1': "10000/10= 1000. 1000/5= 200. 200/2=100. 100/4=25. 25/5=5. 5/5=0. Totally you’ve made 31 tests. But there can be less.",
+        }
+        return render(request, 'engine/quest_symptoms.html', ctx)
+
+
+@login_required(login_url='login')
+def quest_mutations(request):
+    ctx = {
+        'video': 'tv_mutations',
+        'hint_1': " С + G = CG",
+    }
+    ans1 = request.POST.get('ans1')
+    ans2 = request.POST.get('ans2')
+    ans3 = request.POST.get('ans3')
+    ans4 = request.POST.get('ans4')
+    print(ans1, ans2, ans3, ans4)
+    if ans1 is not None and ans2 is not None and ans3 is not None and ans4 is not None :
+        if ans1 == 'GH' and ans2 == 'DA' and ans3 == 'EB' and ans4 == 'CF':
+            answer = """
+            The yellow vaccine should be next to red
+            """
+            ctx = {
+                'text': answer,
+                'video': 'blur'
+            }
+            return render(request, 'engine/page_show_tips.html', ctx)
+        else:
+            return render(request, 'engine/quest_mutations.html', ctx)
+    else:
+        return render(request, 'engine/quest_mutations.html', ctx)
+
+
+@login_required(login_url='login')
+def quest_probs(request):
+    ctx = {
+        'picture': '/static/engine/images/probirki.jpg',
+        'hint_1': "You need to find a hint with color mixing.",
+    }
+    ans1 = request.POST.get('ans1')
+    ans2 = request.POST.get('ans2')
+    ans3 = request.POST.get('ans3')
+    ans4 = request.POST.get('ans4')
+    print(ans1, ans2, ans3, ans4)
+    if ans1 is not None and ans2 is not None and ans3 is not None and ans4 is not None :
+        if ans1.upper() == 'EBOLA' and ans2.upper() == 'MERS' and ans3.upper() == 'FLU' and ans4.upper() == 'CORONA':
+            answer = """
+            The purple vaccine should be above the green but not next to it
+            """
+            ctx = {
+                'text': answer,
+                'video': 'blur'
+            }
+            return render(request, 'engine/page_show_tips.html', ctx)
+        else:
+            return render(request, 'engine/quest_probes.html', ctx)
+    else:
+        return render(request, 'engine/quest_probes.html', ctx)
+
+@login_required(login_url='login')
+def quest_cell(request):
+    ans = request.POST.get('ans')
+    ctx = {
+        'picture': '/static/engine/images/cell.jpg',
+        'hint_1': "Test hint",
+    }
+    print(ans)
+    if ans is not None:
+        if ans == '7':
+            answer = """
+                   but below the blue, and not next to it.
+            """
+            ctx = {
+                'text': answer,
+                'video': 'blur'
+            }
+            return render(request, 'engine/page_show_tips.html', ctx)
+        else:
+            return render(request, 'engine/quest_cell.html', ctx)
+    else:
+        return render(request, 'engine/quest_cell.html', ctx)
 
 @login_required(login_url='login')
 def quest_suites(request):
-    ctx = {'hint_1': "test hint"}
+    ctx = {'hint_1': "Test hint"}
     glasses = request.POST.get('glasses')
     masks = request.POST.get('masks')
     gloves = request.POST.get('gloves')
@@ -305,51 +494,6 @@ def quest_suites(request):
     else:
         return render(request, 'engine/quest_picture.html', ctx)
 
-@login_required(login_url='login')
-def lab_table_symptoms(request):
-    ctx = {'hint_1': "test hint"}
-    ans = request.POST.get('answer')
-    if ans is not None:
-        if ans == '28':
-            answer = """
-            the Yellow above green
-            """
-            ctx = {
-                'text': answer,
-                'video': 'blur'
-            }
-            return render(request, 'engine/page_show_tips.html', ctx)
-        else:
-            return redirect('table')
-    else:
-        ctx = {
-            'video': 'symptoms',
-            'hint_1': 'test hint',
-        }
-        return render(request, 'engine/quest_symptoms.html', ctx)
-
-
-@login_required(login_url='login')
-def lab_tv_puzzle(request):
-    print(request)
-    ans1 = request.GET.get('ans1')
-    ans2 = request.GET.get('ans2')
-    ans3 = request.GET.get('ans3')
-    ans4 = request.GET.get('ans4')
-    print(ans1, ans2, ans3, ans4)
-    if ans1 == 'GH' and ans2 == 'DA' and ans3 == 'EB' and ans4 == 'CF':
-        answer = """
-        The yellow vaccine should be next to red
-        """
-        ctx = {
-            'text': answer,
-            'video': 'blur'
-        }
-        return render(request, 'engine/lab_tv_solve.html', ctx)
-    else:
-        ctx = {'picture': '/static/engine/images/mutation.jpg'}
-        return render(request, 'engine/lab_tv_puzzle.html', ctx)
-
 
 @login_required(login_url='login')
 def lab_probes(request):
@@ -357,64 +501,10 @@ def lab_probes(request):
     return render(request, 'engine/pazzle_probes.html', ctx)
 
 
-@login_required(login_url='login')
-def lab_probes_check(request):
-    print(request)
-    ans1 = request.GET.get('ans1')
-    ans2 = request.GET.get('ans2')
-    ans3 = request.GET.get('ans3')
-    ans4 = request.GET.get('ans4')
-    print(ans1, ans2, ans3, ans4)
-    if ans1.upper() == 'EBOLA' and ans2.upper() == 'MERS' and ans3.upper() == 'FLU' and ans4.upper() == 'CORONA':
-        answer = """
-        The purple vaccine should be above the green but not next to it
-        """
-        ctx = {
-            'text': answer,
-            'video': 'blur'
-        }
-        return render(request, 'engine/lab_tab_news_solve.html', ctx)
-    else:
-        ctx = {'picture': '/static/engine/images/probirki.jpg'}
-        return render(request, 'engine/pazzle_probes.html', ctx)
 
-@login_required(login_url='login')
-def microscope_check(request):
-    print(request)
-    ans1 = request.GET.get('ans1')
-   
-    print(ans1)
-    if ans1 == 'EBOLA':
-        answer = """
-        The place for the white vaccine is directly above the orange one
-        """
-        ctx = {
-            'text': answer,
-            'video': 'blur'
-        }
-        return render(request, 'engine/lab_tab_news_solve.html', ctx)
-    else:
-        ctx = {'picture': '/static/engine/images/microscope_look_loupe.jpg'}
-        return render(request, 'engine/pazzle_microscope.html', ctx)
 
-@login_required(login_url='login')
-def cell_check(request):
-    print(request)
-    ans1 = request.GET.get('ans1')
-    print(ans1)
-    if ans1 == '7':
-        answer = """
-        but below the blue,
-        and not next to it
-        """
-        ctx = {
-            'text': answer,
-            'video': 'blur'
-        }
-        return render(request, 'engine/lab_tv_solve.html', ctx)
-    else:
-        ctx = {'picture': '/static/engine/images/cell.jpg'}
-        return render(request, 'engine/pazzle_cell.html', ctx)
+
+
 
 @login_required(login_url='login')
 def lab_reagents(request):

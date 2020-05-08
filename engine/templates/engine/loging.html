@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static %}
+  <meta charset="UTF-8" />
+  <title>Login</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'engine/style_ui.css' %}" />
+</head>
+
+<body>
+  <div class="form">
+    <form method="POST" action="">
+      {% csrf_token %}
+      <h2>Login</h2>
+      <div class="conteiner">
+        <img id="pict" src="" />
+      </div>
+      <div class="input">
+        <div class="input-box">
+          <label>Username:</label>
+          <input type="text" name="username" placeholder="name">
+        </div>
+        <div class="input-box" hidden="true">
+          <label>Password 1</label>
+          <input type="text" name="password" placeholder="name">
+        </div>
+        {{form.errors}}
+        <div class="input-box">
+          <input type="submit" name="" value="LOGIN" />
+        </div>
+      </div>
+      <p class="login">Don't have an account? <a href="{% url 'register' %}" class="ml-2">Sign Up</a></p>
+    </form>
+  </div>
+  <script>
+    var form_fields = document.getElementsByTagName("input");
+    form_fields[1].placeholder = "name";
+    form_fields[2].value = '12345678'
+    for (var field in form_fields) {
+      form_fields[field].className += " form-control";
+    }
+  </script>
+</body>
+
+</html>

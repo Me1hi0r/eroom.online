@@ -1,6 +1,20 @@
 {% extends 'engine/main.html' %}
 {% load static %}
 
+{% block hint %}
+
+<div class="btn-group dropleft">
+  <button type="button" class="btn btn-light btn-secondary dropdown-toggle btn-lg" data-toggle="dropdown"
+    aria-haspopup="true" aria-expanded="false">
+    HINT
+  </button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="#">{{ hint_1 }}</a>
+  </div>
+
+</div>
+{% endblock hint %}
+
 {% block content %}
 
   <img id='pict' src="{{ picture }}">
@@ -17,24 +31,22 @@
 
 {% block btn %}
   <ul class="navbar-nav mx-auto">
-      <li class="nav-item">
-          <a class="nav-link" href="{% url 'small_table' %}">
-              Table
-          </a>
-      </li>
-      <li class="nav-item">
-      <form class="form-inline" action="{% url 'check_probes' %}" method="GET">
-          <input name = "ans1" class="form-control mr-sm-2" type="text" aria-label="Search1">
-          <input name = "ans2" class="form-control mr-sm-2" type="text" aria-label="Search2">
-          <input name = "ans3" class="form-control mr-sm-2" type="text" aria-label="Search3">
-          <input name = "ans4" class="form-control mr-sm-2" type="text" aria-label="Search4">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Enter</button>
+    <li class="nav-item">
+      <form class="form-inline" action="{% url 'check_probes' %}" method="POST">
+        {% csrf_token %}
+          <input name = "ans1" class="form-control mr-sm-2" type="text" aria-label="Search1" placeholder="prob 1">
+          <input name = "ans2" class="form-control mr-sm-2" type="text" aria-label="Search2" placeholder="prob 2">
+          <input name = "ans3" class="form-control mr-sm-2" type="text" aria-label="Search3" placeholder="prob 3">
+          <input name = "ans4" class="form-control mr-sm-2" type="text" aria-label="Search4" placeholder="prob 4">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-check" aria-hidden="true"></i></button>
       </form>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'reagents' %}">
-          Reagents
-        </a>
-      </li>
+    </li>
+  </ul>
+  <ul class="navbar-nav ml-auto">
+    <li class="nav-item">
+      <a class="nav-link text-light" href="{% url 'small_table' %}">
+        <i class="fa fa-fast-backward fa-3x" aria-hidden="true"></i>
+      </a>
+    </li>
   </ul>
 {% endblock btn %}

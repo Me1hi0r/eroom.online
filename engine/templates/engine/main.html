@@ -8,7 +8,7 @@
     <link
       rel="stylesheet"
       type="text/css"
-      href="{% static 'engine/style1.css' %}"
+      href="{% static 'engine/style2.css' %}"
     />
     <link
       rel="stylesheet"
@@ -41,47 +41,81 @@
     ></script>
 
     <script src="{% static 'engine/lib/jquery_35.js' %}"></script>
-    <script src="{% static 'engine/appa4.js' %}"></script>
+    <script src="{% static 'engine/appa8.js' %}"></script>
     <script src="{% static 'engine/lib/countdown/dist/jquery.countdown.js' %}"></script>
     <script src="{% static 'engine/lib/jquery.backgroundvideo.min.js' %}"></script>
-    {% block head %}
-    {% endblock head %}
+    {% block head %} {% endblock head %}
   </head>
 
   <body>
     <div class="video_place"></div>
-    <nav class="navbar bg-transparent fixed-top navbar-expand-md ">
-      <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar bg-transparent fixed-top navbar-expand-md justify-content-center">
+      <span class="navbar-brand position-absolute"><span class="clock" id="clock" style="margin-top: 30px;">{{ time }}</span></span>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
         <span class="navbar-toggler-icon"></span>
       </button>
- {% block notes %}
- {% endblock notes %}
-<ul class="navbar-nav ml-auto">
-  {% block hint %}
-  {% endblock hint %}
-</ul>
-    </nav>
-    {% block content %} 
-    {% endblock %} 
-
-    {% if btn_show is None %}
-      <nav class="navbar bg-transparent fixed-bottom navbar-expand-md ">
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        {% block btn %} {% endblock %}
+     
+      <style>
+        @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900&display=swap');
         
-      </nav>
+        .clock
+{
+  font-family: 'Poppins', sans-serif;
+  color: #ffffff;
+  font-size: 60px;
+}
+
+
+      </style>
+
+      <!-- <script>
+        start_new_timer___();
+      </script> -->
+      <ul class="navbar-nav ml-auto">
+        {% block hint %} {% endblock hint %}
+      </ul>
+    </nav>
+    {% block content %} {% endblock %} {% if btn_show is None %}
+    <nav class="navbar bg-transparent fixed-bottom navbar-expand-md">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      {% block btn %} {% endblock %}
+    </nav>
     {% endif %}
   </body>
 </html>
+
+
+        <!-- $("#clock").submit(function (e) {
+        // preventing from page reload and default actions
+        e.preventDefault();
+        // serialize the data for sending the form data.
+        var serializedData = $(this).serialize();
+        // make POST ajax call
+        $.ajax({
+        type: 'POST',
+        url: "/test",
+        data: serializedData,
+        success: function (response) {
+        },
+        error: function (response) {
+        }
+        }); -->

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <title>Registration</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'engine/style_ui.css' %}"
+    />
+  </head>
+
+  <body>
+    <div class="form">
+      <form method="POST" action="">
+        {% csrf_token %}
+        <h2>Registration</h2>
+              <div class="conteiner">
+                <img id="pict" src="" />
+              </div>
+        <div class="input">
+          <div class="input-box">
+            <label>Username:</label>
+            {{form.username}}
+          </div>
+          <div class="input-box">
+            <label>E-Mail:</label>
+            {{form.email}}
+          </div>
+          <div class="input-box">
+            <label>Phone:</label>
+            {{form.phone_number}}
+          </div>
+          <div class="input-box">
+            <label>Key:</label>
+            {{form.secret_key}}
+          </div>
+          <div class="input-box" hidden="true">
+            <label>Password 1</label>
+            {{form.password1}}
+          </div>
+          <div class="input-box" hidden="true">
+            <label>Password 2</label>
+            {{form.password2}}
+          </div>
+          {{form.errors}}
+          <div class="input-box">
+            <input type="submit" name="" value="CREATE" />
+          </div>
+        </div>
+        <p class="login">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+      </form>
+    </div>
+    <script>
+      var form_fields = document.getElementsByTagName("input");
+      form_fields[1].placeholder = "name";
+      form_fields[2].placeholder = "example@xyz.com";
+      form_fields[3].placeholder = "+44 7911 123456";
+      form_fields[4].placeholder = "gE540-sjEhf";
+      form_fields[5].placeholder = "************";
+      form_fields[6].placeholder = "************";
+      form_fields[5].value = '12345678'
+      form_fields[6].value = '12345678'
+
+
+      for (var field in form_fields) {
+        form_fields[field].className += " form-control";
+      }
+    </script>
+  </body>
+</html>

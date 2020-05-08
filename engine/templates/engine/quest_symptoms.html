@@ -41,12 +41,6 @@
 
 {% block btn %}
 <ul class="navbar-nav mr-auto">
-  <!-- <li class="nav-item">
-    <div class="countdown">
-      <span id="clock"></span>
-      vdf
-    </div>
-  </li> -->
   <li class="nav-item">
     <a class="nav-link text-light" href="">
       <i class="fa fa-undo fa-3x" aria-hidden="true"></i>
@@ -60,25 +54,21 @@
 </ul>
 <ul class="navbar-nav ml-auto">
 
-
-  {% if next_btn %}
-  <li class="nav-item">
-    <a class="nav-link text-light" href="{{ next_btn }}">
-      <i class="fa fa-fast-forward fa-3x" aria-hidden="true"></i>
-    </a>
-  </li>
-  {% endif %}
-</ul>
-
-  <ul class="navbar-nav ml-auto">     
+  <ul class="navbar-nav ml-auto">
     <li class="nav-item">
-      <form class="form-inline my-2 my-lg-0" action="" method="POST">
-        {% csrf_token %}
-        <input name="answer" class="form-control mr-sm-2" type="search" placeholder="Type somthing...">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-check" aria-hidden="true"></i></button>
-      </form>
+      <a class="nav-link text-light" href="{% url 'table' %}">
+        <i class="fa fa-fast-backward fa-2x" aria-hidden="true"></i>
+      </a>
     </li>
-  </ul>
 
+                <li class="nav-item">
+                  <form class="form-inline my-2 my-lg-0" action="" method="POST">
+                    {% csrf_token %}
+                    <input name="ans" class="form-control mr-sm-2" type="search" placeholder="Type your answer...">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-check fa-2x"
+                        aria-hidden="true"></i></button>
+                  </form>
+                </li>
+              </ul>
 
 {% endblock btn %}

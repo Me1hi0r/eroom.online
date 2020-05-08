@@ -18,7 +18,28 @@ class CreateUserForm(UserCreationForm):
     def clean_secret_key(self):
         data = self.cleaned_data['secret_key']
 
-        keys = {'dfWe3-4sda_', 'jd3dn-soPyt', 'bHGdf-t8sYT', 'dffds-SDsOR', 'dWdss-eE7Es'}
+        keys = {
+            'dfWe3-4sda_', 
+            'jd3dn-soPyt', 
+            'bHGdf-t8sYT', 
+            'dffds-SDsOR', 
+
+            'dWdss-eE7Es',
+            'dJerr-seFfe',
+            'FDscs-sA*sd',
+            'as34s-sfd)s',
+
+            'mho98-dvEds',
+            '4fHrd-dDasd',
+            'dsfsU-ddfGd',
+            '73#dd-GDdse',
+
+            'OOIbt-3FERR',
+            'hDDC8-JgFSS',
+            'hTUH6-nmGFS',
+            'SuTGX-uGRtW'
+
+            }
         if data not in keys:
             raise forms.ValidationError("You have wrong key!")
         return data

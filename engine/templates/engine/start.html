@@ -2,24 +2,12 @@
 {% load static %}
 {% block content %}
   <div class="start-container">
-    <h3 class="start-text">
-      <p>YOU HAVE A CHANCE TO </p>
-      <p>INVESTIGATE A MYSTERY</p>
-      <br>
-      <p>IT’S TIME TO GATHER</p>
-      <p>YOUR THOUGHTS</p>
-      <p>AND CALL FRIENDS</p>
-      <p>(ZOOM, FACETIME, ETC)</p>
-      <br>
-      <p>BEFORE YOU START,</p>
-      <p>READ THE RULES.</p>
-
-    </h3>
-
-    <a href="{% url 'intro1' %}" class="btn btn-outline-light" role="button" aria-pressed="true">TRY YOURSELF</a>
-    <button class="btn btn-outline-light" role="button" aria-pressed="true" onclick="document.body.querySelector('.start-text').innerText = '1. Ruls 1 #\n2. Ruls 2#\n3. Ruls 3\n4. Ruls 4#'">RULES</button>
+    <img src="{% static 'engine/images/start.png' %} " width="500px" style="margin-top: 200px;">
   </div>
-
+  <div class="container" style="text-align: center; margin-top: 40px;">
+    <a href="{% url 'intro1' %}" class="btn btn-outline-light mx-4" style="width: 150px;" role="button" aria-pressed="true">TRY YOURSELF</a>
+    <a href="{% url 'intro1' %}" class="btn btn-outline-light mx-4 " style="width: 150px;" role="button" aria-pressed="true">RULS</a>
+  </div>
   <script>
       $(document).ready(function() {
         back_video('{{ video }}', true).play();

@@ -24,8 +24,12 @@ function play_pause(){
     else v.pause();
 }
 
-function start_timer(){
-    var hour = new Date().getTime() + 3590000;
+function start_new_timer___(){
+  c = document.body.querySelector("#clock")
+  var msec = parseInt(c.innerHTML) * 10000;
+  console.log(msec);
+  var hour = new Date().getTime() + msec;
+  console.log(hour)
     $('#clock').countdown(hour)
     .on('update.countdown', function(event) {
       $(this).html(event.strftime('<span>%M:%S</span>'));
@@ -34,6 +38,15 @@ function start_timer(){
     });
 }
 
+function old_timer() {
+  var hour = new Date().getTime() + 3590000;
+  $('#clock').countdown(hour)
+    .on('update.countdown', function (event) {
+      $(this).html(event.strftime('<span>%M:%S</span>'));
+    }).on('finish.countdown', function (event) {
+      $('#clock').html('Time out');
+    });
+}
 
 window.addEventListener('resize', function () {
   p = document.body.querySelector("#pict");
